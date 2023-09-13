@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const reactionsSchema = new mongoose.Schema({
     reactionId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         default: () => new mongoose.Types.ObjectId(),
     },
     reactionBody: {
