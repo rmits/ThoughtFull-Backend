@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./config/connection');
-const apiRoutes = require('./routes/index');
+const apiRoutes = require('./routes/api-index');
 
 
 const PORT = process.env.PORT || 3001;
@@ -10,7 +10,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(router);
-router.use('/api', apiRoutes);
+app.use('/api', apiRoutes);
 
 db.once('open', () => {
   app.listen(PORT, () => {
