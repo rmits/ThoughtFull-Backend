@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
             password: req.body.password
         })
         await newUser.save();
-        res.status(200).json(newUser);
+        res.status(200).json({ message: 'User Created!', data: newUser });
     } catch (err) {
         res.status(500).json(err.message)
     }
@@ -29,7 +29,13 @@ router.post('/:id/friends/:friendId', async (req, res) => {
         friend.friends.push(user._id);
         await user.save();
         await friend.save();
-        res.status(200).json('New Friend Added!', user, user.friendCount);
+        res.status(200).json({
+            message: 'New Friend Added!',
+            data: {
+                user: user,
+                friends: user.friendCount
+            },
+        });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -38,7 +44,13 @@ router.post('/:id/friends/:friendId', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const user = await User.find()
-        res.status(200).json(user, user.friendCount, user.thoughtCount)
+        res.status(200).json({
+            message: 'Grabbed Users', data: {
+                user: user,
+                friends: user.friendCount,
+                thoughts: user.thoughtCount
+            }
+        })
     } catch (err) {
         res.status(500).json(err.message)
     }
@@ -51,7 +63,13 @@ router.get('/:id', async (req, res) => {
         if (!user) {
             res.status(404).json('User with that ID not found', user)
         }
-        res.status(200).json(user, user.friendCount, user.thoughtCount)
+        res.status(200).json({
+            message: 'Grabbed User', data: {
+                user: user,
+                friends: user.friendCount,
+                thoughts: user.thoughtCount
+            }
+        })
 
     } catch (err) {
         res.status(500).json(err.message)
@@ -66,8 +84,13 @@ router.put('/:id', async (req, res) => {
             res.status(404).json('User with that ID not found', user)
         }
         await user.save();
-        res.status(200).json(user, user.friendCount, user.thoughtCount)
-
+        res.status(200).json({
+            message: 'Updated User', data: {
+                user: user,
+                friends: user.friendCount,
+                thoughts: user.thoughtCount
+            }
+        })
     } catch (err) {
         res.status(500).json(err.message)
     }
